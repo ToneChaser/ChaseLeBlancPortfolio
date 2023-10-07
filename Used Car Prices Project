@@ -17,7 +17,7 @@ library(writexl)
 # Set global options or configurations as needed
 options(stringsAsFactors = FALSE)  # Example: Disable automatic conversion of strings to factors
 
-#Let's load in our code:
+#Let's load in our csv:
 
 file_path <- "/kaggle/input/used-car-price-prediction-dataset/used_cars.csv"
 car_df <- read.csv(file_path)
