@@ -13,7 +13,14 @@
 7. market_size: Information about the size of the market in each area, helping to understand the potential customer base and market dynamics.
 8. profit: financial gain achieved by the company after deducting the cost of goods sold (COGS) and other expenses from the revenue generated through sales.
 9. sales: represent the revenue generated from the coffee chain's products, reflecting its financial performance and customer demand.
+
 --
+<pre>
+```python
+def hello_world():
+    print("Hello, world!")
+```
+</pre>
 -- According to the dataset the date is our primary key. Using this query I discovered we have 1061 dates to work with.
 SELECT
 	COUNT(DISTINCT(date)) AS PK_COUNT
