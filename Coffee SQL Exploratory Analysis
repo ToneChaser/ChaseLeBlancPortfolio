@@ -69,6 +69,8 @@ FROM CoffeeChainSales
 GROUP BY CONCAT(YEAR(date), '-', LPAD(MONTH(date), 2, '0'))
 ORDER BY CONCAT(YEAR(date), '-', LPAD(MONTH(date), 2, '0'))
 
+![image](https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/3d83b889-d19e-4dbd-b29e-61641ceabea3)
+
 	-- Are there any seasonal trends or patterns in sales?
 -- Market Analysis:
 	-- What is the distribution of market sizes in the dataset?
