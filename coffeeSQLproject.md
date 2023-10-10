@@ -66,8 +66,9 @@ FROM CoffeeChainSales;
 ```
 
 ## Now that we have date ranges and nominal data identified we can answer a few questions about the data.
-### Date Analysis:
-#### How are sales distributed across the different years and months?
+## Date Analysis:
+### How are sales distributed across the different years and months?
+After running this query, TablePlus allows you to create a chart witht the data gathered. Here you can see that 2014 was a pivotal year in growing sales and the sales peaked around August-September that year. The previous year showed not too impressive sales results around that time period. This demonstrates that there might be more to explore as to why this occured.
 ```SQL
 SELECT 
     CONCAT(YEAR(date), '-', LPAD(MONTH(date), 2, '0')) AS ym_date,
@@ -76,29 +77,23 @@ FROM CoffeeChainSales
 GROUP BY CONCAT(YEAR(date), '-', LPAD(MONTH(date), 2, '0'))
 ORDER BY CONCAT(YEAR(date), '-', LPAD(MONTH(date), 2, '0'))
 ```
+<img width="1428" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/60ff7153-faa1-4ea7-9b84-2db8e068d25d">
 
-#### Are there any seasonal trends or patterns in sales?
-### Market Analysis:
-#### What is the distribution of market sizes in the dataset?
-#### How do sales vary among different market sizes?
-#### Are there any specific markets that consistently outperform others?
-### Product Analysis:
-#### What are the most popular products in terms of sales?
-#### How do sales vary by product type or product line?
-#### Are there any products that are consistently popular across markets?
-### Geographic Analysis:
-#### How are sales distributed across different states?
-#### Are there any geographic trends or variations in sales?
-#### Do certain states or regions have unique preferences or behaviors?
-### Type Analysis:
-#### How do sales of decaffeinated and regular products compare?
-#### Are there any differences in sales trends for different types of products?
-#### Do certain regions or markets have a preference for decaffeinated or regular products?
-### Temporal Analysis:
-#### Are there any specific time periods when sales significantly spiked or dropped?
-#### How have sales evolved over the entire dataset period (from 2012 to 2015)?
-### Overall Sales Trends:
-#### What is the overall trend in sales over the years?
-#### Are there any notable changes or anomalies in the dataset?
-### Combining Factors:
-#### Are there interesting relationships or interactions between factors such as market size, product type, and state that influence sales?
+## Market Analysis:
+### What is the distribution of market sizes in the dataset?
+### How do sales vary among different market sizes?
+### Are there any specific markets that consistently outperform others?
+## Product Analysis:
+### What are the most popular products in terms of sales?
+### How do sales vary by product type or product line?
+### Are there any products that are consistently popular across markets?
+## Geographic Analysis:
+### How are sales distributed across different states?
+### Are there any geographic trends or variations in sales?
+### Do certain states or regions have unique preferences or behaviors?
+## Type Analysis:
+### How do sales of decaffeinated and regular products compare?
+### Are there any differences in sales trends for different types of products?
+### Do certain regions or markets have a preference for decaffeinated or regular products?
+## Combining Factors:
+### Are there interesting relationships or interactions between factors such as market size, product type, and state that influence sales?
