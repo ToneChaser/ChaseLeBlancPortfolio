@@ -81,10 +81,61 @@ ORDER BY CONCAT(YEAR(date), '-', LPAD(MONTH(date), 2, '0'))
 
 ## Market Analysis:
 ### What is the distribution of market sizes in the dataset?
+This query says we have 636 small markets and 426 major markets in this dataset.
+```SQL
+SELECT
+    SUM(CASE WHEN market_size = 'Small Market' THEN 1 ELSE 0 END) AS num_small_markets,
+    SUM(CASE WHEN market_size = 'Major Market' THEN 1 ELSE 0 END) AS num_major_markets
+FROM CoffeeChainSales
+-- returns: num_small_market = 636, num_major_markets = 426
+```
 ### How do sales vary among different market sizes?
+Using this query we discover that major markets in this dataset make up the majority of sales, but small market's sales aren't far behind. This might mean I would need to explore how each market performed throughout each year.
+```SQL
+SELECT
+    SUM(CASE WHEN market_size = 'Small Market' THEN sales ELSE 0 END) AS total_sales_small_market,
+    SUM(CASE WHEN market_size = 'Small Market' THEN profit ELSE 0 END) AS total_profit_small_market,
+    SUM(CASE WHEN market_size = 'Major Market' THEN sales ELSE 0 END) AS total_sales_major_market,
+    SUM(CASE WHEN market_size = 'Major Market' THEN profit ELSE 0 END) AS total_profit_major_market
+FROM CoffeeChainSales;
+```
+<img width="674" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/93ae75ea-ef99-4c20-ba68-c0a6df7b74f7">
+
 ### Are there any specific markets that consistently outperform others?
+Using this query we discover that in 2012 and 2013 the company performed best in smaller markets. However, when 2014 hit there was a massive surge in sales from larger markets. This did not last though as 2015 saw the return of small market sales rising.
+```SQL
+SELECT
+    SUM(CASE WHEN market_size = 'Small Market' AND YEAR(date) = 2012 THEN sales ELSE 0 END) AS sales_small_market_2012,
+    SUM(CASE WHEN market_size = 'Major Market' AND YEAR(date) = 2012 THEN sales ELSE 0 END) AS sales_major_market_2012,
+    SUM(CASE WHEN market_size = 'Small Market' AND YEAR(date) = 2013 THEN sales ELSE 0 END) AS sales_small_market_2013,
+    SUM(CASE WHEN market_size = 'Major Market' AND YEAR(date) = 2013 THEN sales ELSE 0 END) AS sales_major_market_2013,
+    SUM(CASE WHEN market_size = 'Small Market' AND YEAR(date) = 2014 THEN sales ELSE 0 END) AS sales_small_market_2014,
+    SUM(CASE WHEN market_size = 'Major Market' AND YEAR(date) = 2014 THEN sales ELSE 0 END) AS sales_major_market_2014,
+    SUM(CASE WHEN market_size = 'Small Market' AND YEAR(date) = 2015 THEN sales ELSE 0 END) AS sales_small_market_2015,
+    SUM(CASE WHEN market_size = 'Major Market' AND YEAR(date) = 2015 THEN sales ELSE 0 END) AS sales_major_market_2015  
+FROM CoffeeChainSales;
+```
+<img width="1289" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/24ca3a06-5226-4108-87f6-394b940d8a92">
+However, profits tell a very different story. Here we can see that in 2012 large markets had the most profit, but 2013 saw a return in small market profits. In the previous query we saw massive sales in large markets and that is represented here, but what is concerning is the large market sales dropping off in 2015. Definitely some later analysis to answer that question.
+
+```SQL
+SELECT
+    SUM(CASE WHEN market_size = 'Small Market' AND YEAR(date) = 2012 THEN profit ELSE 0 END) AS profit_small_market_2012,
+    SUM(CASE WHEN market_size = 'Major Market' AND YEAR(date) = 2012 THEN sales ELSE 0 END) AS profit_major_market_2012,
+    SUM(CASE WHEN market_size = 'Small Market' AND YEAR(date) = 2013 THEN profit ELSE 0 END) AS profit_small_market_2013,
+    SUM(CASE WHEN market_size = 'Major Market' AND YEAR(date) = 2013 THEN profit ELSE 0 END) AS profit_major_market_2013,
+    SUM(CASE WHEN market_size = 'Small Market' AND YEAR(date) = 2014 THEN profit ELSE 0 END) AS profit_small_market_2014,
+    SUM(CASE WHEN market_size = 'Major Market' AND YEAR(date) = 2014 THEN profit ELSE 0 END) AS profit_major_market_2014,
+    SUM(CASE WHEN market_size = 'Small Market' AND YEAR(date) = 2015 THEN profit ELSE 0 END) AS profit_small_market_2015,
+    SUM(CASE WHEN market_size = 'Major Market' AND YEAR(date) = 2015 THEN profit ELSE 0 END) AS profit_major_market_2015
+FROM CoffeeChainSales;
+```
+<img width="1320" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/5121d92c-fd03-4a2b-8973-677b00cd9c88">
+
 ## Product Analysis:
 ### What are the most popular products in terms of sales?
+
+
 ### How do sales vary by product type or product line?
 ### Are there any products that are consistently popular across markets?
 ## Geographic Analysis:
