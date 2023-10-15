@@ -134,14 +134,121 @@ FROM CoffeeChainSales;
 
 ## Product Analysis:
 ### What are the most popular products in terms of sales?
-
+Using this query we discover that the most popular products in terms of sales for this entire table are Colombian Coffee, Lemon Tea, and Caffe Mocha's.
+```SQL
+SELECT
+	SUM(sales) AS product_total_sales,
+	product_line,
+	product_type,
+	product
+FROM
+	CoffeeChainSales
+GROUP BY
+	product_line,
+	product_type,
+	product
+ORDER BY
+	product_total_sales DESC
+```
+<img width="480" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/7273ca51-a6b2-4f19-b0e6-4d1b2205333e">
 
 ### How do sales vary by product type or product line?
+This query is a simplified version of the previous question. According to these queries beans have more sales than leaves, and 
+```SQL
+SELECT
+	SUM(sales) AS product_total_sales,
+	product_line
+FROM
+	CoffeeChainSales
+GROUP BY
+	product_line
+ORDER BY
+	product_total_sales DESC
+```
+<img width="323" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/cc4468ec-b4a8-411a-90ef-956781a8dc3f">
+
+```SQL
+SELECT
+	SUM(sales) AS product_total_sales,
+	product_type
+FROM
+	CoffeeChainSales
+GROUP BY
+	product_type
+ORDER BY
+	product_total_sales DESC
+ ```
+<img width="259" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/b235f692-28ea-44eb-8cd9-5bec6689078d">
+
 ### Are there any products that are consistently popular across markets?
+Colombian Coffee and Lemon Tea tend to be favorites across each region. However, it is worth noting that not every product is offered across each region. This raises the question as to why some products have not yet been offerred to certain regions as having uniformity across regions would have more conclusive results.
+```SQL
+SELECT
+	market,
+	product,
+	SUM(sales) AS total_sales
+FROM
+	CoffeeChainSales
+WHERE
+	market = 'Central' -- ran this query with South, East, and West as well.
+GROUP BY
+	market,
+	product
+ORDER BY
+	market,
+	total_sales DESC
+```
+<img width="312" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/a54d09fa-51a1-49ea-8191-205513f5c595"> <img width="311" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/d31b1c38-4e98-4c75-a416-ba7e26feb4fe"> <img width="308" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/5b042701-38d2-478c-8e37-f7c2de2dac9f"> <img width="311" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/df2a53e5-a1e3-4bcb-afe1-dd2233fdbb54">
+
 ## Geographic Analysis:
 ### How are sales distributed across different states?
-### Are there any geographic trends or variations in sales?
+This query ranks the states sales in this dataset from most sales to least sales. California, followed by New York, followed by Illinois are the top three in sales. Missouri, New Mexico, and New Hampshire take the lowest of sales.
+```SQL
+SELECT
+	SUM(sales) as total_state_sales,
+	state,
+	market,
+	market_size
+FROM 
+	CoffeeChainSales
+GROUP BY
+	state,
+	market,
+	market_size
+ORDER BY
+	total_state_sales DESC
+```
+<img width="410" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/56fbe7e7-3bc5-457f-b50f-f075b2b98352">
+
 ### Do certain states or regions have unique preferences or behaviors?
+Since there are 20 states and 13 unique products across the dataset, I have limited the query to return the top selling product in each state. Here are some unique preferences:
+* Iowa's most popular product is Earl Grey Tea.
+* Nevada's most popular drink is Darjeeling.
+* New Yorker's like the hard stuff: Regular Esspresso.
+* New Hampshire's most popular drink is Amaretto.
+```SQL
+WITH RankedProducts AS (
+    SELECT
+        SUM(sales) AS total_state_sales,
+        product,
+        state,
+        ROW_NUMBER() OVER (PARTITION BY state ORDER BY SUM(sales) DESC) AS product_rank
+    FROM 
+        CoffeeChainSales
+    GROUP BY
+        state,
+        product
+)
+SELECT
+    total_state_sales,
+    product,
+    state
+FROM RankedProducts
+WHERE product_rank = 1
+ORDER BY state;
+```
+<img width="391" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/d560b7f5-31af-43d6-a43c-9469e48737c9">
+
 ## Type Analysis:
 ### How do sales of decaffeinated and regular products compare?
 ### Are there any differences in sales trends for different types of products?
