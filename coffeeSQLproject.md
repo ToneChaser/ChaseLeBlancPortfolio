@@ -153,7 +153,7 @@ ORDER BY
 <img width="480" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/7273ca51-a6b2-4f19-b0e6-4d1b2205333e">
 
 ### How do sales vary by product type or product line?
-This query is a simplified version of the previous question. According to these queries beans have more sales than leaves, and 
+This query is a simplified version of the previous question. According to these queries beans have more sales than leaves.
 ```SQL
 SELECT
 	SUM(sales) AS product_total_sales,
@@ -251,7 +251,46 @@ ORDER BY state;
 
 ## Type Analysis:
 ### How do sales of decaffeinated and regular products compare?
+This query reveals that caffeinated beverages sell more than decaf, however, I found it surprising how well decaf actually sold in comparision to caffeinated.
+```SQL
+SELECT
+    SUM(CASE WHEN type = 'Decaf' THEN sales ELSE 0 END) AS total_sales_decaf,
+    SUM(CASE WHEN type = 'Regular' THEN sales ELSE 0 END) AS total_sales_regular
+FROM
+	CoffeeChainSales;
+```
+<img width="280" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/b3f90e2c-4f78-4820-9cdf-e45ec6ad1498">
+
 ### Are there any differences in sales trends for different types of products?
-### Do certain regions or markets have a preference for decaffeinated or regular products?
-## Combining Factors:
-### Are there interesting relationships or interactions between factors such as market size, product type, and state that influence sales?
+Throughout the 35 months in this dataset you can see that decaf products have more predictable sales growth than decaf, I hypothesize this could be that as the business obtained more customers, decaf drinkers didn't tend to switch to caffeinated drinks. However, there are a few months in the chart where decaf outsold regular beverages. I would propose more time to analyze the cause of those low caffeinated drink sales.
+```SQL
+SELECT
+	CONCAT(YEAR(date), '-', LPAD(MONTH(date), 2, '0')) AS ym_date,
+	SUM(CASE WHEN TYPE = 'Decaf' THEN sales ELSE 0 END) AS decaf_sales,
+	SUM(CASE WHEN TYPE = 'Regular' THEN sales ELSE 0 END) AS regular_sales
+FROM
+	CoffeeChainSales
+GROUP BY
+	ym_date
+ORDER BY
+	ym_date
+```
+<img width="1143" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/30091bee-9840-41b4-af48-846819c9335c"> <img width="847" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/634b8d5b-d591-4311-9258-3cfb81c3fb93">
+
+### Do certain markets have a preference for decaffeinated or regular products?
+In this query we find that in the east market caffeine is a more popular beverage type than decaf. In the south, however, the difference in sales between decaf and caffeinated is much smaller than the other markets. West and Central markets hold caffeinated beverages as the popular choice, but the difference in sales between decaf and cafffeinated beverages are similar.
+```SQL
+SELECT
+    CONCAT(market, ' ', type) as market_with_type,
+    SUM(CASE WHEN type = 'Decaf' THEN sales ELSE 0 END) AS decaf_sales,
+    SUM(CASE WHEN type = 'Regular' THEN sales ELSE 0 END) AS regular_sales
+FROM CoffeeChainSales
+GROUP BY market, type
+ORDER BY market_with_type
+```
+<img width="1213" alt="image" src="https://github.com/ToneChaser/ChaseLeBlancPortfolio/assets/145052217/9b1263d4-b25c-4bff-b832-f9e00fac383e">
+
+## Closing Thoughts:
+In this project, it was intriguing to uncover notable trends within the dataset. However, it is evident that there is more to explore, with certain aspects such as margins and target profits remaining unexplored. Each overarching question has given rise to specific inquiries, such as understanding the abrupt decline in sales. Furthermore, our analysis revealed differences in sales patterns over time, particularly between caffeinated and decaffeinated beverages, with the latter absolved of blame.
+
+In summary, this project has been an engaging exercise, and I would recommend a concentrated examination of the substantial sales decline observed in 2015. Additionally, investigating the specific states that underperform relative to others could provide insights into how to maximize their potential. The identification of patterns within the coffee company's data is paramount in recommending the subsequent actions for its stakeholders.
